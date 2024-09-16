@@ -19,33 +19,3 @@ Array.from(allCells).forEach(cell => output.write(cell + "\n"));
 output.end();
 
 console.log(`Wrote ${allCells.size.toLocaleString()} cells to output/cells.csv`);
-
-// const geojsonOutput = createWriteStream("./output/cells.geojson.json");
-// geojsonOutput.write("{\n\"type\": \"FeatureCollection\",\n\"features\": [\n");
-// // for each cell, stream out id to a newline delimited file
-// let first = true;
-// let i = 0;
-// allCells.forEach(cell => {
-//   i++;
-//   // if (i > limit) {
-//   //   return;
-//   // }
-//   if (!first) {
-//     geojsonOutput.write(",\n");
-//   }
-//   // @ts-ignore
-//   geojsonOutput.write(JSON.stringify({
-//     type: "Feature",
-//     properties: {
-//       id: cell,
-//       i
-//     },
-//     geometry: {
-//       type: "Polygon",
-//       coordinates: h3.cellsToMultiPolygon([cell], true)[0]
-//     }
-//   }));
-//   first = false;
-// });
-// geojsonOutput.write("\n]\n}");
-// geojsonOutput.end();

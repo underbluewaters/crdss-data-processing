@@ -8,6 +8,8 @@
 import * as h3 from "h3-js";
 import * as Papa from "papaparse";
 import { createReadStream, createWriteStream } from "node:fs";
+// @ts-ignore
+import cliProgress from 'cli-progress';
 
 const MIN_RESOLUTION = 5;
 
@@ -20,10 +22,32 @@ if (!filePath) {
 
 const processed = new Set<string>();
 
+// Function to count the total number of rows by counting newlines
+function countRows(filePath: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    let lineCount = 0;
+    const stream = createReadStream(filePath);
+
+    stream.on('data', (chunk) => {
+      for (let i = 0; i < chunk.length; ++i) {
+        if (chunk[i] === 10) { // 10 is the ASCII code for newline (\n)
+          lineCount++;
+        }
+      }
+    });
+
+    stream.on('end', () => resolve(lineCount));
+    stream.on('error', reject);
+  });
+}
+
 async function downsample(input: string, resolution: number) {
   const readStream = createReadStream(input);
   const output = createReadStream(input);
   const outputCsv = createWriteStream(`output/cells-${resolution}.csv`);
+  const totalRows = await countRows(input);
+  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  progressBar.start(totalRows, 0);
   let i = 0;
   return new Promise<string>((resolve, reject) => {
     Papa.parse<{ id: string } & { [key: string]: any }>(readStream, {
@@ -42,7 +66,7 @@ async function downsample(input: string, resolution: number) {
         }
         i++;
         if (i % 1000 === 0) {
-          console.log(`Processed ${i.toLocaleString()} cells`);
+          progressBar.update(i);
         }
         const id = row.data.id.toString();
         const parentId = h3.cellToParent(id, resolution);
@@ -60,6 +84,8 @@ async function downsample(input: string, resolution: number) {
         outputCsv.write("\n");
       },
       complete: () => {
+        progressBar.update(totalRows);  // Set it to 100% completion
+        progressBar.stop();
         outputCsv.end();
         console.log(`Wrote ${i.toLocaleString()} cells to output/cells-${resolution}.csv`);
         resolve(`output/cells-${resolution}.csv`);

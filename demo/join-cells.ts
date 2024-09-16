@@ -4,6 +4,13 @@ import * as h3 from "h3-js";
 // @ts-ignore
 import cliProgress from "cli-progress";
 
+// Get output file path (should be first argument)
+const filePath = process.argv[2];
+if (!filePath) {
+  console.error("Usage: npx ts-node downsample.ts <output/path.csv>");
+  process.exit(1);
+}
+
 // Initialize progress bar
 const progressBar = new cliProgress.SingleBar({
   format: 'Progress | {bar} | {percentage}% || {value}/{total} cells processed',
@@ -22,7 +29,7 @@ data.data.forEach((row: any) => {
 
 const header = dataToJoin.slice(0, 10000).split("\n")[0];
 
-const output = createWriteStream("./output/joined-cells.csv");
+const output = createWriteStream(filePath);
 output.write(header);
 
 // Read cells.csv as a stream and join each row

@@ -34,4 +34,13 @@ npm run demo:200m-cells
 npm run demo:cells
 # Join high-resolution cell list to data from previous MarinePlanner 200m grid
 npm run demo:annotate
+
+# After the demo joined-cells.csv file has been created, process it into tiles
+# downsample from the max resolution (e.g. 11), to the min resolution, and all
+# the steps in between
+npm run downsample
+# Convert each cells-{resolution}.csv file to fgb, including the hex geometry
+npm run fgb
+# Create a vector tile package from these spatial files
+npm run pmtiles
 ```
