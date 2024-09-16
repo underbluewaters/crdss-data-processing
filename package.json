@@ -1,0 +1,25 @@
+{
+  "name": "crdss-tesselate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demo:200m-cells": "ts-node ./demo/build-cells-from-200m.ts",
+    "demo:cells": "ts-node demo/build-demo-cells.ts",
+    "demo:annotate": " ts-node demo/join-cells.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/centroid": "^7.1.0",
+    "@types/node": "^22.5.5",
+    "@types/papaparse": "^5.3.14",
+    "cli-progress": "^3.12.0",
+    "gdal-async": "^3.9.2",
+    "h3-js": "^4.1.0",
+    "papaparse": "^5.4.1",
+    "parquetjs-lite": "^0.8.7",
+    "ts-node": "^10.9.2"
+  }
+}
