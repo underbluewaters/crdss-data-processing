@@ -11,7 +11,8 @@
     "downsample": "ts-node downsample.ts output/cells-11.csv",
     "fgb": "ts-node build-fgb.ts",
     "pmtiles": "ts-node build-pmtiles.ts && tile-join --force -o output/joined.pmtiles output/*.pmtiles",
-    "build-all": "npm run demo:200m-cells && npm run demo:cells && npm run demo:annotate && npm run downsample && npm run fgb && npm run pmtiles"
+    "build-all": "npm run demo:200m-cells && npm run demo:cells && npm run demo:annotate && npm run downsample && npm run fgb && npm run pmtiles",
+    "preprocess": "npm run downsample && npm run fgb && npm run pmtiles"
   },
   "author": "",
   "license": "ISC",
