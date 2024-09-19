@@ -63,6 +63,7 @@ function csvToFGB(filePath: string, outputPath: string) {
                     type = gdal.OFTInteger;
                     break;
                 }
+                console.log(`Adding field ${key} with type ${type}`);
                 layer.fields.add(new gdal.FieldDefn(key, type));
               }
             }

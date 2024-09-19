@@ -25,7 +25,15 @@ layer.features.forEach(feature => {
   output.write(cell);
   layer.fields.forEach(field => {
     output.write(",");
-    output.write(feature.fields.get(field.name).toString());
+    let value = feature.fields.get(field.name).toString();
+    if (value === "Y") {
+      value = "TRUE";
+    } else if (value === "N") {
+      value = "FALSE";
+    } else if (value === "-999") {
+      value = "";
+    }
+    output.write(value);
   });
   output.write("\n");
 });
